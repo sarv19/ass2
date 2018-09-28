@@ -1,39 +1,95 @@
 from MPVisitor import MPVisitor
 from MPParser import MPParser
 from AST import *
-
+from functools import reduce
+#flatten_mix
+def flatten(l):
+    return list(reduce(lambda x, y: x + y if(isinstance(y, list)) else x + [y], l, []))
 class ASTGeneration(MPVisitor):
     def visitProgram(self,ctx:MPParser.ProgramContext):
-        return Program([self.visit(x) for x in ctx.decl()])
+        return Program(flatten([self.visit(x) for x in ctx.manydeclares()]))
+    def visitManydeclares(self, ctx:MPParser.ManydeclaresContext):
+        if ctx.varde():
+            return self.visit(ctx.varde())
+        if ctx.funcde():
+            return self.visit(ctx.funcde())
+        if ctx.procede():
+            return self.visit(ctx.procede())
+    # def visitFuncdecl(self,ctx:MPParser.FuncdeclContext):
+    #     local,cpstmt = self.visit(ctx.body())
+    #     return FuncDecl(Id(ctx.ID().getText()),
+    #                     [],
+    #                     local,
+    #                     cpstmt,
+    #                     self.visit(ctx.mtype()))
+    # #
+    # def visitProcdecl(self,ctx:MPParser.ProcdeclContext):
+    #     local,cpstmt = self.visit(ctx.body())
+    #     return FuncDecl(Id(ctx.ID().getText()),
+    #                     [],
+    #                     local,
+    #                     cpstmt)
+    # #
+    def visitCompostate(self,ctx:MPParser.CompostateContext):
+        return [],[self.visit(ctx.statement())] if ctx.statement() else []
+    # #
+    # def visitStmt(self,ctx:MPParser.StmtContext):
+    #     return self.visit(ctx.funcall())
+    # #
+    # def visitFuncall(self,ctx:MPParser.FuncallContext):
+    #     return CallStmt(Id(ctx.ID().getText()),[self.visit(ctx.exp())] if ctx.exp() else [])
+    # #
+    # def visitExp(self,ctx:MPParser.ExpContext):
+    #     return IntLiteral(int(ctx.INTLIT().getText()))
+    # #
+    # def visitMtype(self,ctx:MPParser.MtypeContext):
+    #    return IntType()
+    def visitVarde(self, ctx:MPParser.VardeContext):
+        return flatten([self.visit(x) for x in ctx.var_list()])
 
-    def visitFuncdecl(self,ctx:MPParser.FuncdeclContext):
-        local,cpstmt = self.visit(ctx.body()) 
-        return FuncDecl(Id(ctx.ID().getText()),
-                        [],
-                        local,
-                        cpstmt,
-                        self.visit(ctx.mtype()))
+    def visitVar_list(self, ctx:MPParser.Var_listContext):
+        _type = self.visit(ctx.vartype())
+        _id = self.visit(ctx.idlist())
+        return list(map(lambda x: VarDecl(x,_type),_id))
 
-    def visitProcdecl(self,ctx:MPParser.ProcdeclContext):
-        local,cpstmt = self.visit(ctx.body()) 
-        return FuncDecl(Id(ctx.ID().getText()),
+    def visitProcede(self, ctx:MPParser.ProcedeContext):
+        local = flatten([self.visit(x) for x in ctx.varde()])
+        cpstmt = self.visit(ctx.compostate())
+        id = self.visit(ctx.procede1())
+        return FuncDecl(id,
                         [],
                         local,
                         cpstmt)
+    def visitProcede1(self, ctx:MPParser.Procede1Context):
+        return Id(ctx.ID().getText())
 
-    def visitBody(self,ctx:MPParser.BodyContext):
-        return [],[self.visit(ctx.stmt())] if ctx.stmt() else []
-  
-    def visitStmt(self,ctx:MPParser.StmtContext):
-        return self.visit(ctx.funcall())
+    def visitIdlist(self, ctx:MPParser.IdlistContext):
+        return [Id(x.getText()) for x in ctx.ID()]
 
-    def visitFuncall(self,ctx:MPParser.FuncallContext):
-        return CallStmt(Id(ctx.ID().getText()),[self.visit(ctx.exp())] if ctx.exp() else [])
+    def visitVartype(self, ctx:MPParser.VartypeContext):
+        if (ctx.primtype()):
+            return self.visit(ctx.primtype())
+        else:
+            return self.visit(ctx.arrtype())
 
-    def visitExp(self,ctx:MPParser.ExpContext):
-        return IntLiteral(int(ctx.INTLIT().getText()))
+    def visitPrimtype(self, ctx:MPParser.PrimtypeContext):
+        if ctx.BOOLEAN():
+            return BoolType()
+        if ctx.INTEGER():
+            return IntType()
+        if ctx.REAL():
+            return FloatType()
+        if ctx.STRING():
+            return StringType()
 
-    def visitMtype(self,ctx:MPParser.MtypeContext):
-        return IntType()
-        
+    def visitArrtype(self, ctx:MPParser.ArrtypeContext):
+        eleType = self.visit(ctx.primtype())
+        lower = self.visit(ctx.INTLIT(0))
+        upper = self.visit(ctx.INTLIT(1))
+        return ArrayType(lower, uppper, eleType)
 
+    def visitFuncde(self, ctx:MPParser.FuncdeContext):
+        pass
+
+    def visitStatement(self, ctx:MPParser.StatementContext):
+        pass

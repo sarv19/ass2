@@ -3,7 +3,7 @@ grammar MP;
 //1652458
 @lexer::header {
 from lexererr import *
-}  
+}
 
 options{
 	language=Python3; //=Java
@@ -68,9 +68,6 @@ OR: O R;
 DIV: D I V;
 MOD: M O D;
 WITH: W I T H;
-/*KEYWORD: BREAK|CONTINUE|FOR|TO|DOWNTO|DO|IF|THEN|ELSE|RETURN|WHILE|BEGIN|END
-|FUNCTION|PROCEDURE|VAR|TRUE|FALSE|ARRAY|OF|REAL|BOOLEAN|INTEGER|STRING
-|NOT|AND|OR|DIV|MOD;*/
 
 
 ///////    fragments         ////
@@ -120,7 +117,7 @@ primtype: BOOLEAN | INTEGER | REAL | STRING;
 
 ////////   array         //////////
 arrtype: ARRAY LQ SUBNE? INTLIT DD SUBNE? INTLIT RQ OF primtype;
-//numbers: numforarray;
+
 
 ////////   commnent      //////////
 CMT: (BLKCMT | LINECMT) ->skip;
@@ -150,7 +147,8 @@ exp6:  factor | indexexpre
 factor: LB exp1 RB | ID | INTLIT | BOOLLIT
        | REALLIT | STRINGLIT | invoexpre;
 ////////   declaration       ////////
-varde: VAR (idlist COL vartype SEMI)+;   //WRONG
+varde: VAR var_list+;   //WRONG
+var_list:idlist COL vartype SEMI;
 vartype: primtype | arrtype;
 idlist: ID (CM ID)*;
 
@@ -159,9 +157,6 @@ funcde1: FUNCTION ID paralist COL vartype SEMI;
 paralist: LB parade? RB;
 parade: idlist COL vartype (SEMI idlist COL vartype )*;   // WRONG
 
-//parade: parade2|parade1;
-//parade1: idlist COL vartype ;
-//parade2: (idlist COL vartype SEMI)+ idlist COL vartype;
 compostate: BEGIN statement* END;
 
 procede: procede1 varde* compostate;
