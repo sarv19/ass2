@@ -99,11 +99,6 @@ class MPVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by MPParser#paralist.
-    def visitParalist(self, ctx:MPParser.ParalistContext):
-        return self.visitChildren(ctx)
-
-
     # Visit a parse tree produced by MPParser#parade.
     def visitParade(self, ctx:MPParser.ParadeContext):
         return self.visitChildren(ctx)

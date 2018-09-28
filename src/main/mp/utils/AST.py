@@ -3,7 +3,7 @@ from Visitor import Visitor
 
 
 class AST(ABC):
-    def __eq__(self, other): 
+    def __eq__(self, other):
         return self.__dict__ == other.__dict__
 
     @abstractmethod
@@ -50,16 +50,16 @@ class ArrayType(Type):
         self.lower = lower
         self.upper = upper
         self.eleType = eleType
-        
+
     def __str__(self):
         return "ArrayType(" + str(self.lower) + "," + str(self.upper) + "," + str(self.eleType) + ")"
 
     def accept(self, v, param):
         return v.visitArrayType(self, param)
 
-class VoidType(Type): 
+class VoidType(Type):
     def __str__(self):
-        return "VoidType()" 
+        return "VoidType()"
 
     def accept(self, v, param):
         return v.visitVoidType(self, param)
@@ -68,10 +68,10 @@ class Program(AST):
     #decl:list(Decl)
     def __init__(self, decl):
         self.decl = decl
-    
+
     def __str__(self):
         return "Program([" + ','.join(str(i) for i in self.decl) + "])"
-    
+
     def accept(self, v: Visitor, param):
         return v.visitProgram(self, param)
 
@@ -111,7 +111,7 @@ class FuncDecl(Decl):
         "]," + str(self.returnType) +                       \
         ",[" +  ','.join(str(i) for i in self.local) +      \
         "],[" + ','.join(str(i) for i in self.body) + "])"
-    
+
     def accept(self, v, param):
         return v.visitFuncDecl(self, param)
 
@@ -156,7 +156,7 @@ class While(Stmt):
         self.exp = exp
 
     def __str__(self):
-        return "While(" + str(self.exp) + ",[" + ','.join(str(i) for i in self.sl) + "])" 
+        return "While(" + str(self.exp) + ",[" + ','.join(str(i) for i in self.sl) + "])"
 
     def accept(self, v, param):
         return v.visitWhile(self, param)
@@ -185,7 +185,7 @@ class Break(Stmt):
 
     def accept(self, v, param):
         return v.visitBreak(self, param)
-    
+
 class Continue(Stmt):
     def __str__(self):
         return "Continue"
@@ -290,7 +290,7 @@ class Id(LHS):
     def accept(self, v, param):
         return v.visitId(self, param)
 
-def ArrayCell(LHS):
+class ArrayCell(LHS):
     #arr:Expr
     #idx:Expr
     def __init__(self, arr, idx):
