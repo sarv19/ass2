@@ -164,30 +164,7 @@ procede: procede1 varde? compostate;
 procede1: PROCEDURE ID LB parade? RB SEMI;
 
 
-expression: indexexpre | invoexpre | exp1;
-
-indexexpre: factor (LQ expression RQ)+;
-
-
-expindex: expi+;
-expi: expi (ADD|SUBNE) expi1
-			| expi1;
-expi1: expi1 (DIVSI|MUL|MOD|DIV) expi2
-			| expi2;
-expi2: SUBNE expi2
-			| expi3;
-expi3: expi4 LQ expi4 RQ
-			| expi4;
-expi4: LB expi RB | ID | INTLIT | indexexpre|typee;
-
-
-
-invoexpre: ID LB exprlist? RB;
-exprlist: expression (CM expression)*;
-
 ////////      statement       ////////////////
-
-manystatements: statement+;
 statement: semistatement | nomistatement;
 semistatement: assignstate | breakstate | contstate | returnsate | callstate;
 nomistatement: ifstate | forstate | whilestate | compostate | withstate;
@@ -217,6 +194,14 @@ withstate: WITH parade2 DO statement;
 
 callstate: ID LB statelist? RB SEMI;
 statelist: expression (CM expression)*;
+
+/////////       exprestion       //////////
+expression: indexexpre | invoexpre | exp1;
+
+indexexpre: factor (LQ expression RQ)+;
+
+invoexpre: ID LB exprlist? RB;
+exprlist: expression (CM expression)*;
 
 
 UNCLOSE_STRING: '"' ('\\' ([tbfrn] | '\'' | '"' | '\\' )

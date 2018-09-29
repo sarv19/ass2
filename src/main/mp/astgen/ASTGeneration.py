@@ -31,7 +31,7 @@ class ASTGeneration(MPVisitor):
     #                     cpstmt)
     # #
     def visitCompostate(self,ctx:MPParser.CompostateContext):
-        return [],[self.visit(ctx.statement())] if ctx.statement() else []
+        return [self.visit(x) for x in ctx.statement()]
     # #
     # def visitStmt(self,ctx:MPParser.StmtContext):
     #     return self.visit(ctx.funcall())
@@ -123,4 +123,61 @@ class ASTGeneration(MPVisitor):
         return []
 
     def visitStatement(self, ctx:MPParser.StatementContext):
+        if (ctx.semistatement()):
+            return self.visit(ctx.semistatement())
+        else:
+            return self.visit(ctx.nomistatement())
+
+    def visitSemistatement(self, ctx:MPParser.SemistatementContext):
+        if (ctx.assignstate()):
+            return self.visit(ctx.assignstate())
+        elif (ctx.breakstate()):
+            return self.visit(ctx.breakstate())
+        elif (ctx.contstate()):
+            return self.visit(ctx.contstate())
+        elif (ctx.returnsate()):
+            return self.visit(ctx.returnsate())
+        else:
+            return self.visit(ctx.callstate())
+
+    def visitNomistatement(self, ctx:MPParser.NomistatementContext):
+        if (ctx.ifstate()):
+            return self.visit(ctx.ifstate())
+        elif (ctx.forstate()):
+            return self.visit(ctx.forstate())
+        elif (ctx.whilestate()):
+            return self.visit(ctx.whilestate())
+        elif (ctx.compostate()):
+            return self.visit(ctx.compostate())
+        else:
+            return self.visit(ctx.withstate())
+
+    def visitAssignstate(self, ctx:MPParser.AssignstateContext):
+        return self.visit(ctx.assignstate1())
+
+    def visitAssignstate1(self, ctx:MPParser.Assignstate1Context):
+        pass
+
+    def visitBreakstate(self, ctx:MPParser.BreakstateContext ):
+        pass
+
+    def visitContstate(self, ctx:MPParser.ContstateContext):
+        pass
+
+    def visitReturnsate(self, ctx:MPParser.ReturnsateContext):
+        pass
+
+    def visitCallstate(self, ctx:MPParser.CallstateContext):
+        pass
+
+    def visitIfstate(self, ctx:MPParser.IfstateContext):
+        pass
+
+    def visitForstate(self, ctx:MPParser.ForstateContext):
+        pass
+
+    def visitWhilestate(self, ctx:MPParser.WhilestateContext):
+        pass
+
+    def visitWithstate(self, ctx:MPParser.WithstateContext):
         pass
