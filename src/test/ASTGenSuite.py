@@ -52,5 +52,16 @@ class ASTGenSuite(unittest.TestCase):
                    var a: integer;
                    begin
                    end"""
-        expect = str(Program([VarDecl(Id("i"),ArrayType(1,2,IntType()))]))
-        self.assertTrue(TestAST.test(input,expect,303))
+        expect = str(Program([FuncDecl(Id("main"),[VarDecl(Id("x"),IntType())],[VarDecl(Id("a"),IntType())],[[],[]],VoidType())]))
+        self.assertTrue(TestAST.test(input,expect,304))
+
+    def test_procedure_para2(self):
+        input = """procedure main(x:integer;e,f:real);
+                   var a: integer;
+                   begin
+                   end"""
+        expect = str(Program([FuncDecl(Id("main"),
+                                        [VarDecl(Id("x"),IntType()),
+                                        VarDecl(Id("e"),FloatType()),
+                                        VarDecl(Id("f"),FloatType())],[VarDecl(Id("a"),IntType())],[[],[]],VoidType())]))
+        self.assertTrue(TestAST.test(input,expect,305))

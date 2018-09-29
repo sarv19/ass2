@@ -1,0 +1,4 @@
+procedure main(x:integer;e,f:real);
+                   var a: integer;
+                   begin
+                   end

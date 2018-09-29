@@ -104,6 +104,11 @@ class MPVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
+    # Visit a parse tree produced by MPParser#parade1.
+    def visitParade1(self, ctx:MPParser.Parade1Context):
+        return self.visitChildren(ctx)
+
+
     # Visit a parse tree produced by MPParser#compostate.
     def visitCompostate(self, ctx:MPParser.CompostateContext):
         return self.visitChildren(ctx)

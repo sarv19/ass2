@@ -1,4 +1,1 @@
-procedure main(x:integer);
-                   var a: integer;
-                   begin
-                   end
+var i:array[1 .. 2] of integer;

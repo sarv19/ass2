@@ -63,10 +63,13 @@ class ASTGeneration(MPVisitor):
                         cpstmt)
     def visitProcede1(self, ctx:MPParser.Procede1Context):
         if (ctx.parade()):
-            return self.visit(ctx.parade())
+            return flatten([self.visit(ctx.parade())])
         return []
 
     def visitParade(self, ctx:MPParser.ParadeContext):
+        return flatten([self.visit(x) for x in ctx.parade1()])
+
+    def visitParade1(self, ctx:MPParser.Parade1Context):
         _type = self.visit(ctx.vartype())
         _id = self.visit(ctx.idlist())
         return list(map(lambda x: VarDecl(x,_type),_id))

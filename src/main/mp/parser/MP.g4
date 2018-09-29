@@ -155,7 +155,8 @@ idlist: ID (CM ID)*;
 funcde: funcde1 varde? compostate;
 funcde1: FUNCTION ID LB parade? RB COL vartype SEMI;
 //paralist: LB parade? RB;
-parade: idlist COL vartype (SEMI idlist COL vartype )*;   // WRONG
+parade: parade1 (SEMI parade1 )*;   // WRONG
+parade1: idlist COL vartype;
 
 compostate: BEGIN statement* END;
 
