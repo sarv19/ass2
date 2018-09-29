@@ -152,15 +152,15 @@ var_list:idlist COL vartype SEMI;
 vartype: primtype | arrtype;
 idlist: ID (CM ID)*;
 
-funcde: funcde1 varde? compostate;
-funcde1: FUNCTION ID LB parade? RB COL vartype SEMI;
+funcde: funcde1 vartype SEMI varde? compostate;
+funcde1: FUNCTION ID LB parade? RB COL ;
 //paralist: LB parade? RB;
 parade: parade1 (SEMI parade1 )*;   // WRONG
 parade1: idlist COL vartype;
 
 compostate: BEGIN statement* END;
 
-procede: procede1 varde* compostate;
+procede: procede1 varde? compostate;
 procede1: PROCEDURE ID LB parade? RB SEMI;
 
 

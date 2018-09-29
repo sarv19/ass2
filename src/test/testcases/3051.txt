@@ -1,0 +1,3 @@
+procedure main(x:integer;e,f:real);
+                   begin
+                   end

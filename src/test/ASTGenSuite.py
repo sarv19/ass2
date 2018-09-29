@@ -9,13 +9,7 @@ class ASTGenSuite(unittest.TestCase):
         expect = str(Program([VarDecl(Id("a"),IntType()),VarDecl(Id("b"),IntType()),VarDecl(Id("c"),IntType())]))
         self.assertTrue(TestAST.test(input,expect,300))
     #
-    # def test_simple_function(self):
-    #     """More complex program"""
-    #     input = """function foo ():INTEGER; begin
-    #         putIntLn(4);
-    #     end"""
-    #     expect = str(Program([FuncDecl(Id("foo"),[],[],[CallStmt(Id("putIntLn"),[IntLiteral(4)])],IntType())]))
-    #     self.assertTrue(TestAST.test(input,expect,301))
+
     #
     # def test_call_without_parameter(self):
     #     """More complex program"""
@@ -65,3 +59,32 @@ class ASTGenSuite(unittest.TestCase):
                                         VarDecl(Id("e"),FloatType()),
                                         VarDecl(Id("f"),FloatType())],[VarDecl(Id("a"),IntType())],[[],[]],VoidType())]))
         self.assertTrue(TestAST.test(input,expect,305))
+
+    def test_procedure_novar(self):
+        input = """procedure main(x:integer;e,f:real);
+                   begin
+                   end"""
+        expect = str(Program([FuncDecl(Id("main"),
+                             [VarDecl(Id("x"),IntType()),
+                             VarDecl(Id("e"),FloatType())
+                             ,VarDecl(Id("f"),FloatType())],[],[[],[]],VoidType())]))
+        self.assertTrue(TestAST.test(input,expect,3051))
+
+    def test_function1(self):
+        input = """function foo (a:integer):integer;
+        begin
+
+        end"""
+        expect = str(Program([FuncDecl(Id("foo"),[VarDecl(Id("a"),IntType())],[],[[],[]],IntType())]))
+        self.assertTrue(TestAST.test(input,expect,306))
+
+    def test_function2(self):
+        input = """function foo (a:integer):integer;
+        var d, f:real;
+        begin
+
+        end"""
+        expect = str(Program([FuncDecl(Id("foo"),
+                             [VarDecl(Id("a"),IntType())],
+                             [VarDecl(Id("d"),FloatType()),VarDecl(Id("f"),FloatType())],[[],[]],IntType())]))
+        self.assertTrue(TestAST.test(input,expect,307))
