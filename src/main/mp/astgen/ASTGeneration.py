@@ -55,11 +55,8 @@ class ASTGeneration(MPVisitor):
     def visitProcede(self, ctx:MPParser.ProcedeContext):
         local = flatten([self.visit(x) for x in ctx.varde()])
         cpstmt = self.visit(ctx.compostate())
-        #p= ctx.procede1().getchildren()
-        id = self.visit(ctx.procede1().self.visit(ctx.procede1().ID()))
-        print(id);
+        id = Id(ctx.procede1().ID().getText())
         param = self.visit(ctx.procede1())
-        #print(param)
         return FuncDecl(id,
                         param,
                         local,
@@ -95,9 +92,9 @@ class ASTGeneration(MPVisitor):
 
     def visitArrtype(self, ctx:MPParser.ArrtypeContext):
         eleType = self.visit(ctx.primtype())
-        lower = self.visit(ctx.INTLIT(0))
-        upper = self.visit(ctx.INTLIT(1))
-        return ArrayType(lower, uppper, eleType)
+        lower = ctx.INTLIT(0)
+        upper = ctx.INTLIT(1)
+        return ArrayType(lower, upper, eleType)
 
     def visitFuncde(self, ctx:MPParser.FuncdeContext):
         pass
