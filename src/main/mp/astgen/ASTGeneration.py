@@ -156,6 +156,22 @@ class ASTGeneration(MPVisitor):
         return self.visit(ctx.assignstate1())
 
     def visitAssignstate1(self, ctx:MPParser.Assignstate1Context):
+        if ctx.assignstate1():
+            a= [self.visit (ctx.assignstate1())]
+        if ctx.expression():
+            a=[self.visit(ctx.expression())]
+        a.append(self.visit(ctx.lhs()))
+        b=reduce (lambda x,y: Assign(y,x), list(a))
+        print(b)
+        return b
+
+    def visitLhs(self, ctx:MPParser.LhsContext):
+        if (ctx.ID()):
+            return Id(ctx.ID().getText())
+        else:
+            return self.visit(ctx.indexexpre())
+
+    def visitIndexexpre(self, ctx:MPParser.IndexexpreContext):
         pass
 
     def visitBreakstate(self, ctx:MPParser.BreakstateContext ):
