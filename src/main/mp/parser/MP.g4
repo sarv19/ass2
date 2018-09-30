@@ -144,7 +144,7 @@ exp5: NOT exp5| SUBNE exp5
 exp6:  factor | indexexpre
 			 ;
 
-factor: LB exp1 RB | ID | INTLIT | BOOLLIT
+factor: LB exp1 RB |  ID | INTLIT | BOOLLIT
        | REALLIT | STRINGLIT | invoexpre;
 ////////   declaration       ////////
 varde: VAR var_list+;   //WRONG
@@ -192,8 +192,8 @@ returnnoexp: RETURN SEMI;
 parade2: parade SEMI;
 withstate: WITH parade2 DO statement;
 
-callstate: ID LB statelist? RB SEMI;
-statelist: expression (CM expression)*;
+callstate: ID LB (expression (CM expression)*)? RB SEMI;
+//statelist: expression (CM expression)*;
 
 /////////       exprestion       //////////
 expression: indexexpre | invoexpre | exp1;

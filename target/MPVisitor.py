@@ -214,11 +214,6 @@ class MPVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by MPParser#statelist.
-    def visitStatelist(self, ctx:MPParser.StatelistContext):
-        return self.visitChildren(ctx)
-
-
     # Visit a parse tree produced by MPParser#expression.
     def visitExpression(self, ctx:MPParser.ExpressionContext):
         return self.visitChildren(ctx)

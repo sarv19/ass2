@@ -1,1 +1,1 @@
-Program([FuncDecl(Id(foo),[VarDecl(Id(a),IntType)],IntType,[VarDecl(Id(d),FloatType),VarDecl(Id(f),FloatType)],[AssignStmt(Id(A),AssignStmt(Id(B),AssignStmt(Id(C),ArrayCell(CallExpr(Id(foo),[Id(a)]),[<AST.BinaryOp object at 0x000001818B988048>]))))])])
+Program([FuncDecl(Id(foo),[VarDecl(Id(a),IntType)],IntType,[VarDecl(Id(d),FloatType),VarDecl(Id(f),FloatType)],[])])

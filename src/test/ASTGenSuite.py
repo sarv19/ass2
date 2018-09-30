@@ -82,7 +82,7 @@ class ASTGenSuite(unittest.TestCase):
         input = """function foo (a:integer):integer;
         var d, f:real;
         begin
-        A:=B:=C:=foo(a)[1-4/5 mod 5 ];
+
         end"""
         expect = str(Program([FuncDecl(Id("foo"),
                 [VarDecl(Id("a"),IntType())],
@@ -105,3 +105,19 @@ class ASTGenSuite(unittest.TestCase):
                                                         CallExpr(Id("foo"),[Id("a")]))))],
                                     IntType())]))
         self.assertTrue(TestAST.test(input,expect,308))
+
+    def test_expre(self):
+        input = """function foo (a:integer):integer;
+        var d, f:real;
+        begin
+        A:=B:=C:=foo(a)[1-4/5 mod 5 ];
+        end"""
+        expect = str(Program([FuncDecl(Id("foo"),
+                                      [VarDecl(Id("a"),IntType())],
+                                      [VarDecl(Id("d"),FloatType()),
+                                      VarDecl(Id("f"),FloatType())],
+                                      [Assign(Id("A"),Assign(Id("B"),Assign(Id("C"),ArrayCell
+                                      (CallExpr(Id("foo"),[Id("a")]),
+                                      BinaryOp("-",IntLiteral(1),BinaryOp("MOD",BinaryOp
+                                                    ("/",IntLiteral(4),IntLiteral(5)),IntLiteral(5)))))))],IntType())]))
+        self.assertTrue(TestAST.test(input,expect,309))

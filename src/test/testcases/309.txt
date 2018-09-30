@@ -1,0 +1,6 @@
+function foo (a:integer):integer;
+        var d, f:real;
+        begin
+        A:=B:=C:=foo(a)[1-4/5 mod 5 ];
+        if a>b then begin a:=c; c:=k; end else begin a:=f; f:=foo(a); end
+        end

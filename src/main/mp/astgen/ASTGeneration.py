@@ -171,9 +171,15 @@ class ASTGeneration(MPVisitor):
             return self.visit(ctx.indexexpre())
 
     def visitIndexexpre(self, ctx:MPParser.IndexexpreContext):
-        arr = self.visit(ctx.factor())
-        idx = [self.visit(x) for x in ctx.expression()]
-        return ArrayCell(arr, idx)
+        # arr = self.visit(ctx.factor())
+        # idx = self.visit(ctx.expression())
+        # return ArrayCell(arr, idx)
+        b = [self.visit(i) for i in ctx.expression()]
+        a = self.visit(ctx.factor())
+        c=ArrayCell(a,b[0])
+        for i in range(1,len(b),1):
+            c=ArrayCell(c,b[i])
+        return c
 
     def visitFactor(self, ctx:MPParser.FactorContext):
         if (ctx.LB() and ctx.RB()):
@@ -270,19 +276,36 @@ class ASTGeneration(MPVisitor):
             return self.visit(ctx.exp1())
 
     def visitBreakstate(self, ctx:MPParser.BreakstateContext ):
-        pass
+        return Break()
 
     def visitContstate(self, ctx:MPParser.ContstateContext):
-        pass
+        return Continue()
 
     def visitReturnsate(self, ctx:MPParser.ReturnsateContext):
-        pass
+        if (ctx.returnexp()):
+            return self.visit(ctx.returnexp())
+        else:
+            return self.visit(ctx.returnnoexp())
+
+    def visitReturnexp(self, ctx:MPParser.ReturnexpContext):
+        return Return(self.visit(ctx.expression()))
+
+    def visitReturnnoexp(self, ctx:MPParser.ReturnnoexpContext):
+        return Return()
 
     def visitCallstate(self, ctx:MPParser.CallstateContext):
-        pass
+        method = Id(ctx.ID().getText())
+        param = [self.visit(x) for x in ctx.expression()]
+        return CallStmt(method, param)
 
     def visitIfstate(self, ctx:MPParser.IfstateContext):
-        pass
+        expr = self.visit(ctx.exp1())
+        thenStmt = flatten([self.visit(ctx.statement(0))])
+        if (ctx.statement(1)) is not None:
+            elseStmt = flatten([self.visit(ctx.statement(1))])
+            return If(expr, thenStmt, elseStmt)
+        else:
+            return If(expr, thenStmt)
 
     def visitForstate(self, ctx:MPParser.ForstateContext):
         pass
