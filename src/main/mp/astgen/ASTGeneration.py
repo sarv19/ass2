@@ -193,10 +193,71 @@ class ASTGeneration(MPVisitor):
             return self.visit(ctx.invoexpre())
 
     def visitExp1(self, ctx:MPParser.Exp1Context):
-        if (ctx.(AND))
+        if (ctx.AND() and ctx.THEN()):
+            return BinaryOp("andthen",self.visit(exp1()),self.visit(ctx.exp2()))
+        elif (ctx.OR() and ctx.ELSE()):
+                return BinaryOp("orelse",self.visit(exp1()),self.visit(ctx.exp2()))
+        else:
+            return self.visit(ctx.exp2())
+
+    def visitExp2(self, ctx:MPParser.Exp2Context):
+        if (ctx.EQ()):
+            return BinaryOp("=",self.visit(exp3()),self.visit(ctx.exp3()))
+        elif (ctx.NOTEQ()):
+            return BinaryOp("<>",self.visit(exp3()),self.visit(ctx.exp3()))
+        elif (ctx.LESSTN()):
+            return BinaryOp("<",self.visit(exp3()),self.visit(ctx.exp3()))
+        elif (ctx.GRETN()):
+            return BinaryOp(">",self.visit(exp3()),self.visit(ctx.exp3()))
+        elif (ctx.GREEQ()):
+            return BinaryOp(">=",self.visit(exp3()),self.visit(ctx.exp3()))
+        elif (ctx.LESSEQ()):
+            return BinaryOp("<=",self.visit(exp3()),self.visit(ctx.exp3()))
+        else:
+            return self.visit(ctx.exp3())
+
+    def visitExp3(self, ctx:MPParser.Exp3Context):
+        if (ctx.ADD()):
+            return BinaryOp("+",self.visit(exp3()),self.visit(ctx.exp4()))
+        elif (ctx.SUBNE()):
+            return BinaryOp("-",self.visit(exp3()),self.visit(ctx.exp4()))
+        elif (ctx.OR()):
+            return BinaryOp("OR",self.visit(exp3()),self.visit(ctx.exp4()))
+        else:
+            return self.visit(ctx.exp4())
+
+    def visitExp4(self, ctx:MPParser.Exp4Context):
+        if (ctx.DIVSI()):
+            return BinaryOp("/",self.visit(exp4()),self.visit(ctx.exp5()))
+        elif (ctx.MUL()):
+            return BinaryOp("*",self.visit(exp4()),self.visit(ctx.exp5()))
+        elif (ctx.MOD()):
+            return BinaryOp("MOD",self.visit(exp4()),self.visit(ctx.exp5()))
+        elif (ctx.AND()):
+            return BinaryOp("AND",self.visit(exp4()),self.visit(ctx.exp5()))
+        elif (ctx.DIV()):
+            return BinaryOp("DIV",self.visit(exp4()),self.visit(ctx.exp5()))
+        else:
+            return self.visit(ctx.exp5())
+
+    def visitExp5(self, ctx:MPParser.Exp5Context):
+        if (ctx.NOT()):
+            return UnaryOp("NOT",self.vist(ctx.exp5()))
+        elif (ctx.SUBNE()):
+            return UnaryOp("-",self.vist(ctx.exp5()))
+        else:
+            return self.visit(ctx.exp6())
+
+    def visitExp6(self, ctx:MPParser.Exp6Context):
+        if (ctx.factor()):
+            return self.visit(ctx.factor())
+        else:
+            return self.visit(ctx.indexexpre())
 
     def visitInvoexpre(self, ctx:MPParser.InvoexpreContext):
-        pass
+        method = Id(ctx.ID().getText())
+        param = [self.visit(x) for x in expression()]
+        return CallExpr(method, param)
 
     def visitExpression(self, ctx:MPParser.ExpressionContext):
         pass
