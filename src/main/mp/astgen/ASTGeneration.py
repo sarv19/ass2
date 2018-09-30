@@ -172,6 +172,33 @@ class ASTGeneration(MPVisitor):
             return self.visit(ctx.indexexpre())
 
     def visitIndexexpre(self, ctx:MPParser.IndexexpreContext):
+        arr = self.visit(ctx.factor())
+        idx = [self.visit(x for x in expression())]
+        return ArrayCell(arr, idx)
+
+    def visitFactor(self, ctx:MPParser.FactorContext):
+        if (ctx.exp1()):
+            return self.visit(ctx.exp1())
+        elif (ctx.ID()):
+            return Id(ctx.ID().getText())
+        elif (ctx.INTLIT()):
+            return IntLiteral(ctx.INTLIT().getText())
+        elif (ctx.BOOLLIT()):
+            return BooleanLiteral(ctx.BOOLLIT().getText())
+        elif (ctx.REALLIT()):
+            return FloatLiteral(ctx.REALLIT().getText())
+        elif (ctx.STRINGLIT()):
+            return StringLiteral(ctx.STRINGLIT().getText())
+        else:
+            return self.visit(ctx.invoexpre())
+
+    def visitExp1(self, ctx:MPParser.Exp1Context):
+        if (ctx.(AND))
+
+    def visitInvoexpre(self, ctx:MPParser.InvoexpreContext):
+        pass
+
+    def visitExpression(self, ctx:MPParser.ExpressionContext):
         pass
 
     def visitBreakstate(self, ctx:MPParser.BreakstateContext ):
