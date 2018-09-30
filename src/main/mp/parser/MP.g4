@@ -175,9 +175,10 @@ assignstate1: lhs ASSI assignstate1
 lhs: ID | indexexpre;
 ifstate: IF exp1 THEN statement (ELSE statement)? ;
 
-whilestate: WHILE exp1 DO stopstate* statement stopstate*;
+whilestate: WHILE expression DO stopstate* statement stopstate*;
 
-forstate: FOR ID ASSI expression (TO|DOWNTO) expression DO stopstate* statement stopstate*;
+forstate: FOR ID ASSI expression (TO|DOWNTO)
+    expression DO stopstate* statement stopstate*;
 
 breakstate: BREAK SEMI;
 

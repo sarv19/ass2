@@ -308,10 +308,25 @@ class ASTGeneration(MPVisitor):
             return If(expr, thenStmt)
 
     def visitForstate(self, ctx:MPParser.ForstateContext):
-        pass
+        id = Id(ctx.ID().getText())
+        expr1 = self.visit(ctx.expression(0))
+        expr2 = self.visit(ctx.expression(1))
+        loop = [self.visit(ctx.statement())]
+        if (ctx.TO()):
+            up = "True"
+        else:
+            up = "False"
+        return For(id, expr1, expr2, up, loop)
 
     def visitWhilestate(self, ctx:MPParser.WhilestateContext):
-        pass
+        sl = flatten([self.visit(ctx.statement())])
+        exp = self.visit(ctx.expression())
+        return While(exp, sl)
 
     def visitWithstate(self, ctx:MPParser.WithstateContext):
-        pass
+        decl = flatten([self.visit(ctx.parade2())])
+        stmt = flatten([self.visit(ctx.statement())])
+        return With(decl, stmt)
+
+    def visitParade2(self, ctx:MPParser.Parade2Context):
+        return self.visit(ctx.parade())

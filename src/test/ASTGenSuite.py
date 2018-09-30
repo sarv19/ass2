@@ -111,6 +111,7 @@ class ASTGenSuite(unittest.TestCase):
         var d, f:real;
         begin
         A:=B:=C:=foo(a)[1-4/5 mod 5 ];
+        with a,b,c:integer;a:array[-1 .. 5]of integer;f:real; do a:=b[5]+f;
         end"""
         expect = str(Program([FuncDecl(Id("foo"),
                                       [VarDecl(Id("a"),IntType())],
