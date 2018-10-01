@@ -1,4 +1,4 @@
-procedure Empty(a,b,c:real);
+function Empty(a:real;c:array [0 .. 10] of integer):string;
         var d, f:boolean;
             i: integer;
         begin

@@ -169,9 +169,11 @@ statement: semistatement | nomistatement;
 semistatement: assignstate | breakstate | contstate | returnsate | callstate;
 nomistatement: ifstate | forstate | whilestate | compostate | withstate;
 
-assignstate: assignstate1 SEMI;
-assignstate1: lhs ASSI assignstate1
-            |lhs ASSI expression;
+//assignstate: assignstate1 SEMI;
+//assignstate1: lhs ASSI assignstate1
+//            |lhs ASSI expression;
+//lhs: ID | indexexpre;
+assignstate: (lhs ASSI)+ expression SEMI;
 lhs: ID | indexexpre;
 ifstate: IF exp1 THEN statement (ELSE statement)? ;
 

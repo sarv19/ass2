@@ -1,1 +1,1 @@
-Program([FuncDecl(Id(foo),[VarDecl(Id(a),IntType)],IntType,[],[])])
+Program([FuncDecl(Id(Empty),[VarDecl(Id(a),FloatType),VarDecl(Id(k),IntType)],VoidType(),[VarDecl(Id(d),BoolType),VarDecl(Id(f),BoolType),VarDecl(Id(i),ArrayType(4,9,BoolType))],[])])

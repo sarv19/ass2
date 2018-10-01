@@ -1,4 +1,4 @@
-procedure foo (a:integer);
+function Empty(a:integer):real;
         var d, f:real;
         begin
 

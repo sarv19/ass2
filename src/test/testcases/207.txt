@@ -1,0 +1,4 @@
+function noVar(a:real;k:integer):array [4 .. 9] of real;
+        begin
+
+        end

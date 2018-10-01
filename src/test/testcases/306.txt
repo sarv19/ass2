@@ -1,4 +1,6 @@
-function foo (a:integer):integer;
+procedure Empty(a:real;k:integer);
+        var d, f:boolean;
+            i: array [4 .. 9] of BOOLEAN;
         begin
 
         end

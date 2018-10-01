@@ -1,4 +1,6 @@
-procedure main(x:integer;e,f:real);
-                   var a: integer;
-                   begin
-                   end
+procedure Empty(a:real;c:array [-1 .. 10] of integer);
+        var d, f:boolean;
+            i: integer;
+        begin
+
+        end

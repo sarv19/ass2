@@ -1,1 +1,1 @@
-Program([FuncDecl(Id(foo),[VarDecl(Id(a),IntType)],IntType,[VarDecl(Id(d),FloatType),VarDecl(Id(f),FloatType)],[AssignStmt(Id(a),AssignStmt(Id(b),AssignStmt(Id(c),CallExpr(Id(foo),[Id(a)]))))])])
+Program([FuncDecl(Id(noParam),[],VoidType(),[],[])])

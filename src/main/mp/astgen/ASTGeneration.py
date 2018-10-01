@@ -15,35 +15,10 @@ class ASTGeneration(MPVisitor):
             return self.visit(ctx.funcde())
         if ctx.procede():
             return self.visit(ctx.procede())
-    # def visitFuncdecl(self,ctx:MPParser.FuncdeclContext):
-    #     local,cpstmt = self.visit(ctx.body())
-    #     return FuncDecl(Id(ctx.ID().getText()),
-    #                     [],
-    #                     local,
-    #                     cpstmt,
-    #                     self.visit(ctx.mtype()))
-    # #
-    # def visitProcdecl(self,ctx:MPParser.ProcdeclContext):
-    #     local,cpstmt = self.visit(ctx.body())
-    #     return FuncDecl(Id(ctx.ID().getText()),
-    #                     [],
-    #                     local,
-    #                     cpstmt)
-    # #
+
     def visitCompostate(self,ctx:MPParser.CompostateContext):
         return flatten([self.visit(x) for x in ctx.statement()])
-    # #
-    # def visitStmt(self,ctx:MPParser.StmtContext):
-    #     return self.visit(ctx.funcall())
-    # #
-    # def visitFuncall(self,ctx:MPParser.FuncallContext):
-    #     return CallStmt(Id(ctx.ID().getText()),[self.visit(ctx.exp())] if ctx.exp() else [])
-    # #
-    # def visitExp(self,ctx:MPParser.ExpContext):
-    #     return IntLiteral(int(ctx.INTLIT().getText()))
-    # #
-    # def visitMtype(self,ctx:MPParser.MtypeContext):
-    #    return IntType()
+
     def visitVarde(self, ctx:MPParser.VardeContext):
         return flatten([self.visit(x) for x in ctx.var_list()])
 

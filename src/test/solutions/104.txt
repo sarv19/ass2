@@ -1,0 +1,1 @@
+Program([VarDecl(Id(a),ArrayType(1,5,BoolType)),VarDecl(Id(Name),IntType),VarDecl(Id(Sum),IntType)])

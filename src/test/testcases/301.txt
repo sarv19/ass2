@@ -1,1 +1,4 @@
-procedure main();var a: integer;begin end
+procedure foo (a:integer);
+        begin
+
+        end
