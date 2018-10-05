@@ -1,0 +1,1 @@
+function foo(a: integer; b, c: string): array [1 .. 5] of integer; begin end

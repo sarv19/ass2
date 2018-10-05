@@ -1,0 +1,4 @@
+function foo(): integer;
+         begin
+            for a := 1 to 2 do begin end
+         end

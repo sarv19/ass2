@@ -1,0 +1,4 @@
+procedure main();
+                begin
+                    a := 1 and then 2 or else 1.1e-11;
+                end

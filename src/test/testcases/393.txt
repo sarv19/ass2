@@ -1,0 +1,4 @@
+procedure main();
+                begin
+                    a := "plz stop this!";
+                end

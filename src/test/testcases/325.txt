@@ -1,0 +1,10 @@
+function foo(): integer;
+         begin
+            if a > b
+            then
+                if a < c
+                then
+                    a := a + 1;
+            else
+                a := b;
+         end

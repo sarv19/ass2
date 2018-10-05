@@ -1,0 +1,5 @@
+procedure main();
+		begin
+            With a: Integer; do
+                foo("aaa","aaa",1,2,3,4,5);
+		end

@@ -1,0 +1,6 @@
+
+        procedure main();
+        BEGIN
+        foo(2-4*5)[a+b]:=a[e[f[c]]];
+        end
+        

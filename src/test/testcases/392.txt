@@ -1,0 +1,4 @@
+procedure main();
+                begin
+                    While a > b do a:= a + a[1];
+                end

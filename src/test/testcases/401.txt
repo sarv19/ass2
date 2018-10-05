@@ -1,0 +1,6 @@
+
+        var a: inteGeR;
+        var b: reAl;
+        var c: strINg;
+        var e: array [-1 .. 100] of booLEan;
+        

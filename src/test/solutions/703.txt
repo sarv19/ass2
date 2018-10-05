@@ -1,0 +1,1 @@
+Program([FuncDecl(Id(testass),[],VoidType(),[],[AssignStmt(Id(x),CallExpr(Id(getInt),[Id(stdin)])),AssignStmt(Id(y),BinaryOp(*,Id(x),IntLiteral(2))),AssignStmt(ArrayCell(CallExpr(Id(foo),[]),Id(b)),Id(a)),AssignStmt(ArrayCell(Id(vector),IntLiteral(3)),ArrayCell(CallExpr(Id(foo),[]),Id(b)))])])

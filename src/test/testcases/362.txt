@@ -1,0 +1,7 @@
+var a: integer;
+                function foo(): integer;
+                var a: string;
+                begin end
+                procedure main();
+                var b: string;
+                begin end

@@ -1,0 +1,8 @@
+
+        procedure testass();
+        BEGIN
+        x:=getInt(stdin);
+        y:=x*2;
+        vector[3] := foo()[b] := a;
+        end
+        

@@ -1,0 +1,6 @@
+procedure main();
+		begin
+            For a := foo(TRue,FALSe,TRUE) to 1 do
+                BEGIN
+                END
+		end

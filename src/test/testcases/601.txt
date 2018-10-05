@@ -1,0 +1,6 @@
+
+        procedure main();
+        BEGIN
+        foo(2)[a]:=a[b];
+        end
+        

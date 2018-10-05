@@ -1,1 +1,1 @@
-var a, b, c:real;
+procedure main(); begin end

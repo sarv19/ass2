@@ -1,0 +1,4 @@
+procedure main();
+                begin
+                    a := a[foo(b, a)];
+                end

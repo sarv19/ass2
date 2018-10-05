@@ -1,0 +1,1 @@
+function foo(a: integer; b, c: string): integer; begin end

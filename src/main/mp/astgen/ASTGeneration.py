@@ -73,8 +73,12 @@ class ASTGeneration(MPVisitor):
 
     def visitArrtype(self, ctx:MPParser.ArrtypeContext):
         eleType = self.visit(ctx.primtype())
-        lower = ctx.INTLIT(0)
-        upper = ctx.INTLIT(1)
+        lower = int(ctx.INTLIT(0).getText())
+        upper = int(ctx.INTLIT(1).getText())
+        if ctx.SUBNE(0) is not None:
+            lower = lower*(-1)
+        if ctx.SUBNE(1) is not None:
+            upper = upper*(-1)
         return ArrayType(lower, upper, eleType)
 
     def visitFuncde(self, ctx:MPParser.FuncdeContext):
@@ -128,16 +132,23 @@ class ASTGeneration(MPVisitor):
             return self.visit(ctx.withstate())
 
     def visitAssignstate(self, ctx:MPParser.AssignstateContext):
-        return self.visit(ctx.assignstate1())
+        lhs = flatten([self.visit(x) for x in ctx.lhs()])
+        exp = self.visit(ctx.expression())
+        lhs.append(exp)
+        a=[]
+        for i in range(0,len(lhs)-1,1):
+            a.append(Assign(lhs[i],lhs[i+1]))
+        a.reverse()
+        return a
 
-    def visitAssignstate1(self, ctx:MPParser.Assignstate1Context):
-        if ctx.assignstate1():
-            a= [self.visit (ctx.assignstate1())]
-        if ctx.expression():
-            a=[self.visit(ctx.expression())]
-        a.append(self.visit(ctx.lhs()))
-        b=reduce (lambda x,y: Assign(y,x), list(a))
-        return b
+    # def visitAssignstate1(self, ctx:MPParser.Assignstate1Context):
+    #     if ctx.assignstate1():
+    #         a= [self.visit (ctx.assignstate1())]
+    #     if ctx.expression():
+    #         a=[self.visit(ctx.expression())]
+    #     a.append(self.visit(ctx.lhs()))
+    #     b=reduce (lambda x,y: Assign(y,x), list(a))
+    #     return b
 
     def visitLhs(self, ctx:MPParser.LhsContext):
         if (ctx.ID()):
@@ -162,11 +173,11 @@ class ASTGeneration(MPVisitor):
         elif (ctx.ID()):
             return Id(ctx.ID().getText())
         elif (ctx.INTLIT()):
-            return IntLiteral(ctx.INTLIT().getText())
+            return IntLiteral(int(ctx.INTLIT().getText()))
         elif (ctx.BOOLLIT()):
-            return BooleanLiteral(ctx.BOOLLIT().getText())
+            return BooleanLiteral(bool(ctx.BOOLLIT().getText()))
         elif (ctx.REALLIT()):
-            return FloatLiteral(ctx.REALLIT().getText())
+            return FloatLiteral(float(ctx.REALLIT().getText()))
         elif (ctx.STRINGLIT()):
             return StringLiteral(ctx.STRINGLIT().getText())
         else:
@@ -202,7 +213,7 @@ class ASTGeneration(MPVisitor):
         elif (ctx.SUBNE()):
             return BinaryOp("-",self.visit(ctx.exp3()),self.visit(ctx.exp4()))
         elif (ctx.OR()):
-            return BinaryOp("OR",self.visit(ctx.exp3()),self.visit(ctx.exp4()))
+            return BinaryOp(ctx.OR().getText(),self.visit(ctx.exp3()),self.visit(ctx.exp4()))
         else:
             return self.visit(ctx.exp4())
 
@@ -212,19 +223,20 @@ class ASTGeneration(MPVisitor):
         elif (ctx.MUL()):
             return BinaryOp("*",self.visit(ctx.exp4()),self.visit(ctx.exp5()))
         elif (ctx.MOD()):
-            return BinaryOp("MOD",self.visit(ctx.exp4()),self.visit(ctx.exp5()))
+            mod = ctx.MOD().getText()
+            return BinaryOp(mod,self.visit(ctx.exp4()),self.visit(ctx.exp5()))
         elif (ctx.AND()):
-            return BinaryOp("AND",self.visit(ctx.exp4()),self.visit(ctx.exp5()))
+            return BinaryOp(ctx.AND().getText(),self.visit(ctx.exp4()),self.visit(ctx.exp5()))
         elif (ctx.DIV()):
-            return BinaryOp("DIV",self.visit(ctx.exp4()),self.visit(ctx.exp5()))
+            return BinaryOp(ctx.DIV().getText(),self.visit(ctx.exp4()),self.visit(ctx.exp5()))
         else:
             return self.visit(ctx.exp5())
 
     def visitExp5(self, ctx:MPParser.Exp5Context):
         if (ctx.NOT()):
-            return UnaryOp("NOT",self.vist(ctx.exp5()))
+            return UnaryOp(ctx.NOT().getText(),self.visit(ctx.exp5()))
         elif (ctx.SUBNE()):
-            return UnaryOp("-",self.vist(ctx.exp5()))
+            return UnaryOp("-",self.visit(ctx.exp5()))
         else:
             return self.visit(ctx.exp6())
 
@@ -236,7 +248,9 @@ class ASTGeneration(MPVisitor):
 
     def visitInvoexpre(self, ctx:MPParser.InvoexpreContext):
         method = Id(ctx.ID().getText())
-        param = flatten([self.visit(ctx.exprlist())])
+        param = []
+        if ctx.exprlist():
+            param = flatten([self.visit(ctx.exprlist())])
         return CallExpr(method, param)
 
     def visitExprlist(self, ctx:MPParser.ExprlistContext):
@@ -270,7 +284,10 @@ class ASTGeneration(MPVisitor):
 
     def visitCallstate(self, ctx:MPParser.CallstateContext):
         method = Id(ctx.ID().getText())
-        param = [self.visit(x) for x in ctx.expression()]
+        if ctx.expression(0) is not None:
+            param = [self.visit(x) for x in ctx.expression()]
+        else:
+            param = []
         return CallStmt(method, param)
 
     def visitIfstate(self, ctx:MPParser.IfstateContext):
@@ -286,7 +303,7 @@ class ASTGeneration(MPVisitor):
         id = Id(ctx.ID().getText())
         expr1 = self.visit(ctx.expression(0))
         expr2 = self.visit(ctx.expression(1))
-        loop = [self.visit(ctx.statement())]
+        loop = flatten([self.visit(ctx.statement())])
         if (ctx.TO()):
             up = "True"
         else:

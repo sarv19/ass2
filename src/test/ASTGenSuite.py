@@ -100,7 +100,7 @@ class ASTGenSuite(unittest.TestCase):
         self.assertTrue(TestAST.test(input,expect,205))
 
     def test_function6(self):
-        input = """function Empty(a:real;k:integer):array [4 .. 9] of real;
+        input = """function Empty(a:real;k:integer):array [-4 .. -9] of real;
         var d, f:boolean;
             i: integer;
         begin
@@ -109,7 +109,7 @@ class ASTGenSuite(unittest.TestCase):
         expect = str(Program([FuncDecl(Id("Empty"),[VarDecl(Id("a"),FloatType()),
                                                   VarDecl(Id("k"),IntType())],
                                                  [VarDecl(Id("d"),BoolType()),VarDecl(Id("f"),BoolType()),
-                                                 VarDecl(Id("i"),IntType())],[],ArrayType(4,9,FloatType()))]))
+                                                 VarDecl(Id("i"),IntType())],[],ArrayType(-4,-9,FloatType()))]))
         self.assertTrue(TestAST.test(input,expect,206))
 
     def test_function7(self):
@@ -175,7 +175,7 @@ class ASTGenSuite(unittest.TestCase):
 
         end"""
         expect = str(Program([FuncDecl(Id("Empty"),[VarDecl(Id("a"),FloatType()),
-                                                 VarDecl(Id("c"),ArrayType(1,10,IntType()))],
+                                                 VarDecl(Id("c"),ArrayType(-1,10,IntType()))],
                                                  [VarDecl(Id("d"),BoolType()),VarDecl(Id("f"),BoolType()),
                                                  VarDecl(Id("i"),IntType())],[],VoidType())]))
         self.assertTrue(TestAST.test(input,expect,305))
@@ -213,24 +213,137 @@ class ASTGenSuite(unittest.TestCase):
 
 
 #########        Types       #############
+    def test_types1(self):
+        input = """
+        var a: inteGeR;
+        var b: reAl;
+        var c: strINg;
+        var e: array [-1 .. 100] of booLEan;
+        """
+        expect = str(Program([VarDecl(Id("a"),IntType()),VarDecl(Id("b"),FloatType()),
+                              VarDecl(Id("c"),StringType()),VarDecl(Id("e"),
+                              ArrayType(-1,100,BoolType()))]))
+        self.assertTrue(TestAST.test(input,expect,401))
 
-#########   Prim
-
-#########   Array
 
 #########        precedence       #############
 
 #########        expression       #############
-
 #########   index
+    def test_index1(self):
+        input = """
+        procedure main();
+        BEGIN
+        foo(2)[a]:=a[b];
+        end
+        """
+        expect = str(Program([FuncDecl(Id("main"),[],[],
+                                   [Assign(ArrayCell(CallExpr(Id("foo"),
+                                   [IntLiteral(2)]),Id("a")),ArrayCell(Id("a"),Id("b")))],VoidType())]))
+        self.assertTrue(TestAST.test(input,expect,601))
+
+    def test_index2(self):
+        input = """
+        procedure main();
+        BEGIN
+        foo(2-4*5)[a+b]:=a[e[f[c]]];
+        end
+        """
+        expect = str(Program([FuncDecl(Id("main"),[],[],
+                                  [Assign(ArrayCell(CallExpr(Id("foo"),
+                                  [BinaryOp("-",IntLiteral(2),BinaryOp("*",IntLiteral(4),IntLiteral(5)))]),
+                                  BinaryOp("+",Id("a"),Id("b"))),ArrayCell(Id("a"),
+                                  ArrayCell(Id("e"),ArrayCell(Id("f"),Id("c")))))],VoidType())]))
+        self.assertTrue(TestAST.test(input,expect,602))
 
 #########   invocation
+    def test_invo1(self):
+        input = """
+        procedure main();
+        BEGIN
+        nopara();
+        foo(a);
+        foo2(foo(a));
+        sum(x,y);
+        pt(n,m,k);
+        end
+        """
+        expect = str(Program([FuncDecl(Id("main"),[],[],
+                             [CallStmt(Id("nopara"),[]),CallStmt(Id("foo"),[Id("a")]),
+                             CallStmt(Id("foo2"),[CallExpr(Id("foo"),[Id("a")])]),
+                             CallStmt(Id("sum"),[Id("x"),Id("y")]),
+                             CallStmt(Id("pt"),[Id("n"),Id("m"),Id("k")])],VoidType())]))
+        self.assertTrue(TestAST.test(input,expect,611))
+
 
 #########        statement       #############
-
 #########   assign
+    def test_assign1(self):
+        input = """
+        procedure testass();
+        BEGIN
+        a:=5;
+        a:=b:=c:=d:=5;
+        a:=b:= foo(a);
+        a :=b[10]:=foo()[3]:=x:=1;
+        end
+        """
+        expect = str(Program([FuncDecl(Id("testass"),[],[],
+                             [Assign(Id("a"),IntLiteral(5)),
+                             Assign(Id("d"),IntLiteral(5)),
+                             Assign(Id("c"),Id("d")),Assign(Id("b"),Id("c")),
+                             Assign(Id("a"),Id("b")),Assign(Id("b"),CallExpr(Id("foo"),[Id("a")])),
+                             Assign(Id("a"),Id("b")),Assign(Id("x"),IntLiteral(1)),
+                             Assign(ArrayCell(CallExpr(Id("foo"),[]),IntLiteral(3)),Id("x")),
+                             Assign(ArrayCell(Id("b"),IntLiteral(10)),
+                                        ArrayCell(CallExpr(Id("foo"),[]),IntLiteral(3))),
+                            Assign(Id("a"),ArrayCell(Id("b"),IntLiteral(10)))],VoidType())]))
+        self.assertTrue(TestAST.test(input,expect,701))
+
+    def test_index2(self):
+        input = """
+        procedure testass();
+        BEGIN
+        vec[1] := vec[2] := vector[3] := 0;
+        teststring := "insert letters here";
+        end
+        """
+        expect = str(Program([FuncDecl(Id("testass"),[],[],
+                             [Assign(ArrayCell(Id("vector"),IntLiteral(3)),IntLiteral(0)),
+                             Assign(ArrayCell(Id("vec"),IntLiteral(2)),ArrayCell(Id("vector"),IntLiteral(3))),
+                             Assign(ArrayCell(Id("vec"),IntLiteral(1)),ArrayCell(Id("vec"),IntLiteral(2))),
+                             Assign(Id("teststring"),StringLiteral("insert letters here"))])]))
+        self.assertTrue(TestAST.test(input,expect,702))
+
+    def test_index2(self):
+        input = """
+        procedure testass();
+        BEGIN
+        x:=getInt(stdin);
+        y:=x*2;
+        vector[3] := foo()[b] := a;
+        end
+        """
+        expect = str(Program([FuncDecl(Id("testass"),[],[],
+                             [Assign(Id("x"),CallExpr(Id("getInt"),[Id("stdin")])),
+                             Assign(Id("y"),BinaryOp("*",Id("x"),IntLiteral(2))),
+                             Assign(ArrayCell(CallExpr(Id("foo"),[]),Id("b")),Id("a")),
+                             Assign(ArrayCell(Id("vector"),IntLiteral(3)),
+                                        ArrayCell(CallExpr(Id("foo"),[]),Id("b")))])]))
+        self.assertTrue(TestAST.test(input,expect,703))
 
 #########   if/while/for/with
+    def test_ifwhileforwith(self):
+        input = """
+        procedure main();
+        BEGIN
+        foo(2)[a]:=a[b];
+        end
+        """
+        expect = str(Program([FuncDecl(Id("main"),[],[],
+                                   [Assign(ArrayCell(CallExpr(Id("foo"),
+                                   [IntLiteral(2)]),Id("a")),ArrayCell(Id("a"),Id("b")))],VoidType())]))
+        self.assertTrue(TestAST.test(input,expect,601))
 
 #########   +beak/continue/return
 

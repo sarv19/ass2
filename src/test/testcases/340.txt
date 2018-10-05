@@ -1,0 +1,5 @@
+function foo(): integer;
+         begin
+            with a, b: integer; do
+                a := b;
+         end

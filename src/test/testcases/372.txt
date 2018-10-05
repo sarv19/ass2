@@ -1,0 +1,8 @@
+procedure main();
+                begin
+                    a := 1;
+                    b := 1.1e-11;
+                    c := "string";
+                    d := True;
+                    e := False;
+                end

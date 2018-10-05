@@ -1,0 +1,9 @@
+function foo(): integer;
+         begin
+            begin
+                begin
+                    a := 1;
+                end
+            end
+            b := 1;
+         end

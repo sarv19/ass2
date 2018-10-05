@@ -1,0 +1,1 @@
+Program([FuncDecl(Id(main),[],VoidType(),[],[CallStmt(Id(nopara),[]),CallStmt(Id(foo),[Id(a)]),CallStmt(Id(foo2),[CallExpr(Id(foo),[Id(a)])]),CallStmt(Id(sum),[Id(x),Id(y)]),CallStmt(Id(pt),[Id(n),Id(m),Id(k)])])])

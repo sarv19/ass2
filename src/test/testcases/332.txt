@@ -1,0 +1,6 @@
+function foo(): integer;
+         begin
+            for a := 1 to 2 do
+                for a := 1.1e-11 to 2.2e-22 do
+                    a := a;
+         end

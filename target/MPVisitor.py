@@ -144,11 +144,6 @@ class MPVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by MPParser#assignstate1.
-    def visitAssignstate1(self, ctx:MPParser.Assignstate1Context):
-        return self.visitChildren(ctx)
-
-
     # Visit a parse tree produced by MPParser#lhs.
     def visitLhs(self, ctx:MPParser.LhsContext):
         return self.visitChildren(ctx)

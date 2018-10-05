@@ -1,0 +1,6 @@
+function foo(): integer;
+         begin
+            continue;
+            Continue;
+            CONTINUE;
+         end

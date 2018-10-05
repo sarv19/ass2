@@ -1,0 +1,4 @@
+procedure main();
+                begin
+                    a := a div b mod c and d;
+                end

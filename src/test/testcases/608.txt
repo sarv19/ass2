@@ -1,0 +1,5 @@
+function foo (a:integer):integer;
+        var d, f:real;
+        begin
+        while a>5-7 do a:=b:=c:=foo(5);
+        end

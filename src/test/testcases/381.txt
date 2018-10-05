@@ -1,0 +1,4 @@
+procedure main();
+                begin
+                    a := not (a * ( a * a )) ;
+                end

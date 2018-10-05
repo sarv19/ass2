@@ -1,0 +1,7 @@
+
+        procedure testass();
+        BEGIN
+        vec[1] := vec[2] := vector[3] := 0;
+        teststring := "insert letters here";
+        end
+        

@@ -1,0 +1,4 @@
+var a: array [-1 .. 2] of integer;
+                        b: string;
+                function foo(): integer; begin end
+                procedure main(); begin end

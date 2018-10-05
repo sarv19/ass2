@@ -1,0 +1,12 @@
+procedure main();
+		begin
+            With a:Real; do
+                if a * b THEN
+                    With a:Integer ; Do
+                        if a >= c THEN
+                            With c:Integer ; Do
+                                If a / c THEN
+                                    While a = c Do
+                                        A:=1;
+
+		end

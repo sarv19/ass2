@@ -1,0 +1,7 @@
+function foo(): integer;
+         begin
+            while a < b do
+                a := b;
+            while a > c do
+                b := a;
+         end

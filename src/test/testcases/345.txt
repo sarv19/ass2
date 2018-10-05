@@ -1,0 +1,9 @@
+function foo(): integer;
+         begin
+            with a: integer; do
+                begin
+                    a := b;
+                    with b: string; do
+                        b := a;
+                end
+         end

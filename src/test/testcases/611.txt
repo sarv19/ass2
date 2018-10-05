@@ -1,0 +1,10 @@
+
+        procedure main();
+        BEGIN
+        nopara();
+        foo(a);
+        foo2(foo(a));
+        sum(x,y);
+        pt(n,m,k);
+        end
+        

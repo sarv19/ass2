@@ -1,0 +1,4 @@
+procedure main();
+                begin
+                    a := foo(foo(a), a[5]) + a;
+                end
